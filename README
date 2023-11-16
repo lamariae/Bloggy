@@ -1,0 +1,19 @@
+[![Click to watch the project presentation: https://vimeo.com/885249193/96460938f2?ts=0&share=copy]
+
+Bloggy 
+
+Stay connected from anywhere, community journaling with friends! 
+ 
+Bloggy is a flask app that allows users to register/login, create, edit and delete posts called "Bloggys", view their bloggys and the bloggys of other users,
+like bloggys, generate a virtual diary from their bloggys, etc. 
+ Notable feature:
+ - responsive and color-changing like buttons whose info is remembered even after refreshing the session
+ - multi-user interface
+ - well routed
+ - Generating a virtual diary
+ - scroll bar
+
+## Installation
+- virtual environment
+- pipenv install: flask, pymysql, flask-bcrypt, json 
+ 
