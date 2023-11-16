@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <style>
+        .scroll-container {
+            max-height: 500px;
+            overflow-y: auto;
+        }
+    </style>
+    <title>Dashboard</title>
+</head>
+<body>
+    <div class="d-flex justify-content-between align-items-center bg-primary px-5 py-3">
+        <h1 class="text-light">Bloggy</h1>
+        <div>
+            <a href="/feed" class="text-light">Feed</a>
+            <span class="text-light">  |  </span>
+            <a href="/bloggy/create" class="text-light">New Bloggy</a>
+            <span class="text-light">  |  </span>
+            <a href="/account/info" class="text-light">My Account</a>
+            <span class="text-light">  |  </span>
+            <a href="/logout" class="text-light">Logout</a>
+        </div>
+    </div>
+    <div class="container">
+        <div class="flex-container">
+            <h2 class="majority-width text-center p-3">Hello, {{user.first_name}} {{user.last_name}}.</h2>
+        </div>
+
+        <div>
+            {% with messages = get_flashed_messages(category_filter=['success', 'create_bloggy','delete_bloggy', 'bloggy_edit']) %}
+                {% if messages %}
+                    <div class="alert alert-success">
+                        <ul>
+                            {% for message in messages %}
+                                <li>{{ message }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
+            {% endwith %}
+        </div>
+
+        <h3>My Bloggys:</h3>
+        <div class="container">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Date Posted</th>
+                        <th>Actions</th>
+                        <th>Likes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for bloggy in bloggys %}
+                    <tr>
+                        <td>{{ bloggy.title }}</td>
+                        <td>{{ bloggy.created_at.strftime('%d %B %Y') }}</td>
+                        <td>
+                        <div class="d-flex">
+                            <a href="/bloggy/edit/{{ bloggy.bloggy_id }}" class="m-1">Edit</a>
+                            <span class="text-light">  |  </span>
+                            <a href="/bloggy/view/{{bloggy.bloggy_id}}" class="m-1">View</a>
+                            <span class="text-light">  |  </span>
+                            <form action="/bloggy/delete/{{bloggy.bloggy_id}}" method="post">
+                                <input type="hidden" name="bloggy_id" value="{{bloggy.bloggy_id}}">
+                                <button type="submit" class="btn btn-outline-danger">Delete</button>
+                            </form>
+                        </div>
+                        </td>
+                        <td><span id="likes- {{bloggy.bloggy_id}}">{{ likes_dict.get(bloggy.bloggy_id, 0) }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+    </div>
+    <div class="container text-center">
+        <a href="/virtual/diary" id="generateDiaryBtn">
+            <button class="btn btn-primary mx-auto m-3" onclick="showLoading()">Generate Virtual Diary</button>
+        </a>
+        <div id="loadingSpinner" style="display: none;">
+            Loading...
+        </div>
+    </div>
+
+    <div class="container text-center m-3">
+        <h3>Let's see what your friends are saying...</h3>
+    </div>
+
+    <div class="container text-center">
+        <a href="/feed">
+            <button class="btn btn-outline-primary btn-lg mx-auto">Bloggy Feed</button>
+        </a>
+    </div>
+
+    <script>
+        function showLoading() {
+
+            document.getElementById('loadingSpinner').style.display = 'block';
+
+
+            setTimeout(function() {
+                window.location.href = '/virtual/diary';
+            }, 3000); 
+        }
+    </script>
+</body>
+</html>

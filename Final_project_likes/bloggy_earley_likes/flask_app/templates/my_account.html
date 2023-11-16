@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <title>My Account</title>
+</head>
+<body>
+    <div class="d-flex justify-content-between align-items-center bg-primary px-5 py-3">
+        <h1 class="text-light">Bloggy</h1>
+        <div>
+            <a href="/dashboard" class="text-light">Home</a>
+            <span class="text-light">  |  </span>
+            <a href="/feed" class="text-light">Feed</a>
+            <span class="text-light">  |  </span>
+            <a href="/bloggy/create" class="text-light">New Bloggy</a>
+        </div>
+    </div>
+    
+    <div class="container">
+        <h2 class="px-5 py-3">My Account</h2>
+    </div>
+    <div class="container">
+        <div class="row">
+
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{user.first_name}} {{user.last_name}}</h5>
+                        <p class="card-text">Email: {{user.email}}</p>
+                        <div class="text-center">
+                            <a href="/virtual/diary"><button class="btn btn-primary mx-auto m-3">View My Virtual Diary</button></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <h2>Stats:</h2>
+                <div class="card">
+                    <div class="card-body">
+                        <h5>Total Number of Bloggys: {{ total_bloggys }}</h5>
+                        <h5>Total Number of Likes Given: {{ total_likes }}</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

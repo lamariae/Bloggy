@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <style>
+        .scroll-container {
+            max-height: 500px;
+            overflow-y: auto;
+        }
+    </style>
+    <title>Feed</title>
+</head>
+<body>
+    <div class="d-flex justify-content-between align-items-center bg-primary px-5 py-3">
+        <h1 class="text-light">Bloggy</h1>
+        <div>
+            <a href="/dashboard" class="text-light">Home</a>
+            <span class="text-light">  |  </span>
+            <a href="/bloggy/create" class="text-light">New Bloggy</a>
+            <span class="text-light">  |  </span>
+            <a href="/account/info" class="text-light">My Account</a>
+            <span class="text-light">  |  </span>
+            <a href="/logout" class="text-light">Logout</a>
+        </div>
+    </div>
+
+    <div>
+        {% with messages = get_flashed_messages(category_filter=['like_bloggy', 'unlike_bloggy']) %}
+            {% if messages %}
+                <div class="alert alert-success">
+                    <ul>
+                        {% for message in messages %}
+                            <li>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+        {% endwith %}
+    </div>
+
+    <div class="container">
+        <h2 class="px-5 py-3">Bloggy Feed:</h2>
+    </div>
+    <div class="container">
+        <div class="p-3">
+                {% for bloggy in bloggys %}
+                <div class="mb-3 border border-3 border-dark p-3">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <h3>{{ bloggy.title }}</h3>
+                            <p>By: {{bloggy.user.first_name}} {{ bloggy.user.last_name}} on {{ bloggy.created_at.strftime('%d %B %Y') }} at {{bloggy.created_at.strftime('%H:%M')}}</p>
+                            <p>{{ bloggy.content }}</p>
+                        </div>
+                        <div class="col-md-4 text-end">
+                            <form id="likeForm{{ bloggy.bloggy_id }}">
+                                <button type="button" class="btn btn-primary heart-btn" onclick="toggleLike({{bloggy.bloggy_id}})"  {% if bloggy.bloggy_id in user_liked_bloggies %}style="color: red;"{% endif %}>
+                                    {% if bloggy.userLiked %}
+                                        &#10084; Liked
+                                    {% else %}
+                                        &#10084; Like
+                                    {% endif %}
+                                </button>
+                                <span id="likes- {{bloggy.bloggy_id}}">Likes: {{likes_dict[bloggy.bloggy_id].count}}</span>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+        </div>
+    </div>
+    <script>
+        async function toggleLike(bloggyId) {
+    const form = document.getElementById(`likeForm${bloggyId}`);
+    const response = await fetch(`/like/${bloggyId}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    });
+
+    if (response.ok) {
+        const data = await response.json();
+        const button = form.querySelector('button');
+        button.innerHTML = data.liked ? '&#10084; Liked' : '&#10084; Like';
+        button.classList.toggle('btn-primary', !data.liked);
+        button.classList.toggle('btn-danger', data.liked);
+        document.getElementById(`likes-${bloggyId}`).innerText = `Likes: ${data.likeCount}`;
+    }
+}
+    </script>
+
+</body>   
+</html>
