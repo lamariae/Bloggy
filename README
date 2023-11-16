@@ -9,6 +9,7 @@ like bloggys, generate a virtual diary from their bloggys, etc.
  Notable feature:
  - responsive and color-changing like buttons whose info is remembered even after refreshing the session
  - multi-user interface
+ - use of JS 
  - well routed
  - Generating a virtual diary
  - scroll bar
